@@ -17,7 +17,7 @@ class PrototypesController < ApplicationController
     if @prototype.save
       redirect_to prototypes_path
     else
-      render :edit
+      render "prototypes/new"
     end
   end
 
@@ -32,14 +32,15 @@ class PrototypesController < ApplicationController
     if user_signed_in? && current_user.id != @prototype.user_id
     #   redirect_to edit_prototype_path(@prototype.id)
     # else
-      redirect_to prototypes_path
+    redirect_to prototypes_path
     end
   end
 
   def update
     @prototype = Prototype.find(params[:id])
     if @prototype.update(prototype_params)
-      redirect_to prototypes_path 
+      
+      redirect_to "/prototypes/#{@prototype.id}"
     else
       render :edit
     end
@@ -48,7 +49,7 @@ class PrototypesController < ApplicationController
   def destroy
     @prototype = Prototype.find(params[:id])
     @prototype.destroy
-    render :index
+    redirect_to prototypes_path
   end
 
   private
