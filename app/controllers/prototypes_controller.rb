@@ -17,7 +17,7 @@ class PrototypesController < ApplicationController
     if @prototype.save
       redirect_to prototypes_path
     else
-      render :new
+      render :edit
     end
   end
 
@@ -29,12 +29,17 @@ class PrototypesController < ApplicationController
 
   def edit
     @prototype = Prototype.find(params[:id])
+    if user_signed_in? && current_user.id != @prototype.user_id
+    #   redirect_to edit_prototype_path(@prototype.id)
+    # else
+      redirect_to prototypes_path
+    end
   end
 
   def update
     @prototype = Prototype.find(params[:id])
     if @prototype.update(prototype_params)
-      redirect_to root_path
+      redirect_to prototypes_path 
     else
       render :edit
     end
@@ -51,7 +56,4 @@ class PrototypesController < ApplicationController
     params.require(:prototype).permit(:title, :catch_copy, :concept, :image).merge(user_id: current_user.id)
     
   end
-  
-
-  
 end
